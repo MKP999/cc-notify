@@ -12,7 +12,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
     /// Min seconds between banners for the same session (anti-spam).
     private let bannerCooldown: TimeInterval = 10
     /// Safety-net reconciliation interval (DispatchSource events can coalesce).
-    private let pollInterval: TimeInterval = 5
+    private let pollInterval: TimeInterval = 3
 
     // MARK: - State
     private var statusItem: NSStatusItem!

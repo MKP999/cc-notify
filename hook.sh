@@ -52,7 +52,9 @@ payload="$(jq -nc \
     warp_url:$warp_url, warp_uuid:$warp_uuid, term_bundle_id:$term_bundle_id,
     tmux_socket:$tmux_socket, tmux_target:$tmux_target, ts:$ts}')"
 
-# Atomic write: temp file in the same directory, then rename.
-tmp="$QUEUE_DIR/.tmp.$$"
+# Atomic write: temp file OUTSIDE the watched queue dir (its parent), then
+# rename in. Writing the temp inside queue made the directory watcher fire
+# before the final file existed (a race that delayed detection to the next poll).
+tmp="$(dirname "$QUEUE_DIR")/.tmp.$$"
 printf '%s\n' "$payload" > "$tmp" && mv -f "$tmp" "$QUEUE_DIR/${session_id}.json"
 exit 0
